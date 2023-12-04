@@ -2,8 +2,8 @@
 // Created by nehae on 11/27/2023.
 //
 
-#ifndef SUDOKU_PUZZLE_D_EXCEPT_H
-#define SUDOKU_PUZZLE_D_EXCEPT_H
+#ifndef D_EXCEPT_H
+#define D_EXCEPT_H
 
 
 #include <strstream>
@@ -161,4 +161,4 @@ class fileError: public baseException {
 };
 
 
-#endif //SUDOKU_PUZZLE_D_EXCEPT_H
+#endif //D_EXCEPT_H

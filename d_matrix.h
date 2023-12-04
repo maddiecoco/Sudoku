@@ -2,8 +2,8 @@
 // Created by nehae on 11/27/2023.
 //
 
-#ifndef SUDOKU_PUZZLE_D_MATRIX_H
-#define SUDOKU_PUZZLE_D_MATRIX_H
+#ifndef D_MATRIX_H
+#define D_MATRIX_H
 
 
 #include <iostream>
@@ -126,4 +126,4 @@ void matrix<T>::resize(int numRows, int numCols) {
 }
 
 
-#endif //SUDOKU_PUZZLE_D_MATRIX_H
+#endif //D_MATRIX_H
