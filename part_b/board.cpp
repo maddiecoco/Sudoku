@@ -250,3 +250,76 @@ void Board::RemoveConflict(int i, int j, ValueType val) {
     colConflicts[j][val] = false;
     sqConflicts[s][val] = false;
 }
+
+bool Board::isLegal(int i, int j, int v)
+// Function to check if a given digit (v) can be placed in a given cell (i, j)
+{
+   int sqr = (j+2)/3 + ((i-1)/3)*3; // equation to find square
+   // legal iff the value hasn't been tried yet and there are no conflicts
+   if (!(rowConflicts[i][v] or colConflicts[j][v] or sqConflicts[sqr][v]))
+      return true;
+   else
+      return false;     
+} // End isLegal
+
+
+bool Board::nextCell(int &i, int &j)
+// Find next cell
+{
+   // check each cell (i, j) for number of conflicts
+   for (i = 1; i <= boardSize; i++)
+   {
+      for (j = 1; j <= boardSize; j++)
+      {
+         if(IsBlank(i,j))
+            return true;
+      }
+   }
+   return false;
+} // End nextCell
+
+
+bool Board::solve(int &count)
+// Function that ties together all functions to solve sudoku board
+{
+   count++;
+   int row = 0;
+   int col = 0;
+   // If there are no empty cells, the sudoku is solved
+
+   if(!nextCell(row, col)) // gets the next row and col to fill in
+   {
+      // return the solved board and exit
+      Print();
+      return true;
+   }
+   else
+   {
+      // checks for legal digits in next empty cell
+      for (int v = 1; v <= boardSize; v++)
+      {
+         // if there is a candidate
+         if(isLegal(row, col, v))
+         {
+            // fill the cell
+            SetCell(row, col, v);
+            if(solve(count)) // next recursive call, checks if the puzzle is solved
+            {
+               // prints count & exits
+               // cout << count << endl;
+               recursions = count;
+               return true;
+            }
+            // if puzzle is not solved, clear the most recent cell
+            ClearCell(row, col);
+         }
+      }
+   }
+   return false;
+} // End of solve
+
+int Board::getRecursions()
+// Function to return number of recursive calls it took to solve each board
+{
+   return recursions;
+}

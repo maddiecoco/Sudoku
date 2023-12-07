@@ -51,6 +51,13 @@ public:
     void AddConflict(int i, int j, ValueType val); //Add a conflict
     void RemoveConflict(int i, int j, ValueType val); //Remove conflict
 
+    // added in part 4b
+      bool isLegal(int, int, int);
+      bool nextCell(int &, int &);
+      bool solve(int &count);
+      int getRecursions();
+      int recursions;
+
 private:
 
     // The following matrices go from 1 to BoardSize in each
@@ -59,6 +66,9 @@ private:
     matrix<bool> rowConflicts;
     matrix<bool> colConflicts;
     matrix<bool> sqConflicts;
+    // Keeps track of the digits that have been placed
+    matrix<vector<bool>> placed;
+
 };
 
 
