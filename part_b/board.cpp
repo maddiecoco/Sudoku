@@ -13,7 +13,8 @@
 
 using namespace std;
 
-// Board constructor - Initializes matrices for the Sudoku board values and conflict tracking for rows, columns, and squares.
+// Board constructor - Initializes matrices for the Sudoku board values and conflict 
+// tracking for rows, columns, and squares.
 Board::Board(int sqSize)
         : value(boardSize + 1, boardSize + 1),
           rowConflicts(boardSize + 1, boardSize + 1),
@@ -33,7 +34,8 @@ void Board::Clear() {
 }
 
 
-// Initialize funciton - Reads a Sudoku board from the input file, setting values for non-empty cells.
+// Initialize funciton - Reads a Sudoku board from the input file, setting
+// values for non-empty cells.
 void Board::Initialize(ifstream &fin) {
     char ch;
 
@@ -53,7 +55,8 @@ void Board::Initialize(ifstream &fin) {
 }
 
 
-// SquareNumber function - Calculates the square number of a cell based on its row and column.
+// SquareNumber function - Calculates the square number of a cell based on
+// its row and column.
 int SquareNumber(int i, int j) {
 //Return the square number of cell i,j (counting from left to right,
 //top to bottom.  Note that i and j each go from 1 to BoardSize)
@@ -65,7 +68,8 @@ int SquareNumber(int i, int j) {
 }
 
 
-// Overloaded Operator - Enables easy printing of vectors, particularly useful for debugging.
+// Overloaded Operator - Enables easy printing of vectors, particularly useful
+// for debugging.
 ostream &operator<<(ostream &ostr, vector<int> &v) {
 //Overloaded output operator for vector class.
     for (int i = 0; i < (int)v.size(); i++)
@@ -75,7 +79,8 @@ ostream &operator<<(ostream &ostr, vector<int> &v) {
 }
 
 
-// GetCell & IsBlank functions - Retrieve cell values and check if a cell is blank, with error checking.
+// GetCell & IsBlank functions - Retrieve cell values and check if a cell is
+// blank, with error checking.
 
 // Returns the value stored in a cell.  Throws an exception if bad values are passed.
 ValueType Board::GetCell(int i, int j) {
@@ -145,7 +150,8 @@ bool Board::IsSolved() {
 }
 
 
-// PrintConflicts function -  Outputs the current conflict states for rows, columns, and squares.
+// PrintConflicts function -  Outputs the current conflict states for rows, 
+// columns, and squares.
 void Board::PrintConflicts() {
     int i;
     // Print the row conflicts
@@ -204,13 +210,13 @@ void Board::ClearCell(int i, int j) {
     // If the old value is not blank change value to blank and remove conflict
     if (oldValue != blank && oldValue != 0) {
         value[i][j] = blank;
-        RemoveConflict(i, j, oldValue);        // Manage conflict tracking for each cell.
+        RemoveConflict(i, j, oldValue);   // Manage conflict tracking for each cell.
     }
 }
 
 
-// CausesConflict function - Determines if placing a value in a cell causes any conflicts.
-// Returns if adding value to cell[i][j] would cause a conflict
+// CausesConflict function - Determines if placing a value in a cell causes any 
+// conflicts. Returns if adding value to cell[i][j] would cause a conflict
 bool Board::CausesConflict(int i, int j, ValueType val) {
     // Throw error if out of board range
     if (i < 1 || i > boardSize || j < 1 || j > boardSize ||
@@ -279,7 +285,8 @@ bool Board::NextCell(int &i, int &j)
 } // End nextCell
 
 
-// solve function - Main recursive function for solving the Sudoku puzzle. It employs a backtracking algorithm.
+// solve function - Main recursive function for solving the Sudoku puzzle. It 
+// employs a backtracking algorithm.
 bool Board::Solve(int &count)
 {
    count++;
@@ -318,7 +325,8 @@ bool Board::Solve(int &count)
    return false;
 } // End of solve
 
-// getRecursions function - Returns the number of recursive calls made during the solving process.
+// getRecursions function - Returns the number of recursive calls made during
+//  the solving process.
 int Board::GetRecursions()
 {
    return recursions;
