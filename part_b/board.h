@@ -51,11 +51,11 @@ public:
     void AddConflict(int i, int j, ValueType val); //Add a conflict
     void RemoveConflict(int i, int j, ValueType val); //Remove conflict
 
-    // added in part 4b
-      bool isLegal(int, int, int);
-      bool nextCell(int &, int &);
-      bool solve(int &count);
-      int getRecursions();
+    // Added in part 4b
+      bool IsLegal(int, int, int);
+      bool NextCell(int &, int &);
+      int GetRecursions();
+      bool Solve(int &count);
       int recursions;
 
 private:

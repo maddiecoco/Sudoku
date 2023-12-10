@@ -251,19 +251,21 @@ void Board::RemoveConflict(int i, int j, ValueType val) {
     sqConflicts[s][val] = false;
 }
 
-bool Board::isLegal(int i, int j, int v)
+
+bool Board::IsLegal(int i, int j, int v)
 // Function to check if a given digit (v) can be placed in a given cell (i, j)
 {
-   int sqr = (j+2)/3 + ((i-1)/3)*3; // equation to find square
-   // legal iff the value hasn't been tried yet and there are no conflicts
+   int sqr = (j+2)/3 + ((i-1)/3)*3;
+   
+   // Considered legal if the value hasn't been tried yet and there are no conflicts
    if (!(rowConflicts[i][v] or colConflicts[j][v] or sqConflicts[sqr][v]))
       return true;
    else
       return false;     
-} // End isLegal
+}
 
 
-bool Board::nextCell(int &i, int &j)
+bool Board::NextCell(int &i, int &j)
 // Find next cell
 {
    // check each cell (i, j) for number of conflicts
@@ -279,7 +281,7 @@ bool Board::nextCell(int &i, int &j)
 } // End nextCell
 
 
-bool Board::solve(int &count)
+bool Board::Solve(int &count)
 // Function that ties together all functions to solve sudoku board
 {
    count++;
@@ -287,7 +289,7 @@ bool Board::solve(int &count)
    int col = 0;
    // If there are no empty cells, the sudoku is solved
 
-   if(!nextCell(row, col)) // gets the next row and col to fill in
+   if(!NextCell(row, col)) // gets the next row and col to fill in
    {
       // return the solved board and exit
       Print();
@@ -299,11 +301,11 @@ bool Board::solve(int &count)
       for (int v = 1; v <= boardSize; v++)
       {
          // if there is a candidate
-         if(isLegal(row, col, v))
+         if(IsLegal(row, col, v))
          {
             // fill the cell
             SetCell(row, col, v);
-            if(solve(count)) // next recursive call, checks if the puzzle is solved
+            if(Solve(count)) // next recursive call, checks if the puzzle is solved
             {
                // prints count & exits
                // cout << count << endl;
@@ -318,7 +320,7 @@ bool Board::solve(int &count)
    return false;
 } // End of solve
 
-int Board::getRecursions()
+int Board::GetRecursions()
 // Function to return number of recursive calls it took to solve each board
 {
    return recursions;
