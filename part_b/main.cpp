@@ -40,19 +40,19 @@ int main() {
         b1.Print();
         cout << "Board " << count << " solved:" << endl;
         int countb1 = 0;
-        b1.solve(countb1);
-        total = total + b1.getRecursions();
+        b1.Solve(countb1);
+        total = total + b1.GetRecursions();
         boards.push_back(b1);
     } 
 
     cout << endl << "Recursion Data:" << endl;
     for (int i = 0; i < boards.size(); i++)
     {
-        cout << "Recursive calls for board " << i + 1 << ": " << boards[i].getRecursions() << endl;
+        cout << "Recursive calls for board " << i + 1 << ": " << boards[i].GetRecursions() << endl;
     }
     
     avg = total / boards.size();
     cout << "Average recursive calls: " << avg << endl;
-    cout << "All done!" << endl;
+    cout << endl << "All done!" << endl;
     return 0;
 }
