@@ -1,8 +1,8 @@
-//
-// Created by nehae on 11/27/2023.
-//
+// Maddie & Neha
+// Sudoku Puzzle Part B
 
-// Declarations and functions for project #4
+
+// Declarations and functions
 #include <iostream>
 #include <limits.h>
 #include "d_matrix.h"
@@ -13,8 +13,7 @@
 
 using namespace std;
 
-//Board constructor
-//Intializes value and conflict matrices
+// Board constructor - Initializes matrices for the Sudoku board values and conflict tracking for rows, columns, and squares.
 Board::Board(int sqSize)
         : value(boardSize + 1, boardSize + 1),
           rowConflicts(boardSize + 1, boardSize + 1),
@@ -22,7 +21,8 @@ Board::Board(int sqSize)
           sqConflicts(boardSize + 1, boardSize + 1) {
 }
 
-//Clear the entire board
+
+// Clear function - Resets all cells on the board.
 void Board::Clear() {
     //For each element in the value matrix, clear the cell
     for (int i = 1; i <= boardSize; i++) {
@@ -32,16 +32,17 @@ void Board::Clear() {
     }
 }
 
-//Read a Sudoku board from the input file
+
+// Initialize funciton - Reads a Sudoku board from the input file, setting values for non-empty cells.
 void Board::Initialize(ifstream &fin) {
     char ch;
 
-    Clear(); //Make sure board is empty
+    Clear(); // Make sure board is empty
     for (int i = 1; i <= boardSize; i++)
         for (int j = 1; j <= boardSize; j++) {
             fin >> ch;
 
-            //If the read char is not blank
+            // If the read char is not blank
             if (ch != '.') {
                 int val = ch - '0'; //Convert char to int
                 SetCell(i, j, val); //Set cell to value
@@ -52,6 +53,7 @@ void Board::Initialize(ifstream &fin) {
 }
 
 
+// SquareNumber function - Calculates the square number of a cell based on its row and column.
 int SquareNumber(int i, int j) {
 //Return the square number of cell i,j (counting from left to right,
 //top to bottom.  Note that i and j each go from 1 to BoardSize)
@@ -63,6 +65,7 @@ int SquareNumber(int i, int j) {
 }
 
 
+// Overloaded Operator - Enables easy printing of vectors, particularly useful for debugging.
 ostream &operator<<(ostream &ostr, vector<int> &v) {
 //Overloaded output operator for vector class.
     for (int i = 0; i < (int)v.size(); i++)
@@ -72,20 +75,18 @@ ostream &operator<<(ostream &ostr, vector<int> &v) {
 }
 
 
-ValueType Board::GetCell(int i, int j) {
-// Returns the value stored in a cell.  Throws an exception
-// if bad values are passed.
+// GetCell & IsBlank functions - Retrieve cell values and check if a cell is blank, with error checking.
 
+// Returns the value stored in a cell.  Throws an exception if bad values are passed.
+ValueType Board::GetCell(int i, int j) {
     if (i >= 1 && i <= boardSize && j >= 1 && j <= boardSize)
         return value[i][j];
     else
         throw rangeError("Bad value in GetCell");
 }
 
-
-bool Board::IsBlank(int i, int j) {
 // Returns true if cell i,j is blank, and false otherwise.
-
+bool Board::IsBlank(int i, int j) {
     // Throw error if out of board range
     if (i < 1 || i > boardSize || j < 1 || j > boardSize)
         throw rangeError("Bad value in IsBlank");
@@ -98,10 +99,8 @@ bool Board::IsBlank(int i, int j) {
 }
 
 
-
+// Print function - Displays the current state of the board in a readable format.
 void Board::Print() {
-//Prints the current board.
-
     for (int i = 1; i <= boardSize; i++) {
         if ((i - 1) % squareSize == 0) {
             cout << " -";
@@ -130,13 +129,10 @@ void Board::Print() {
 }
 
 
-// EVERYTHING BELOW THIS I'M NOT SURE WE NEED
-
-
-//Returns if the board is solved
+// IsSolved function - Checks if the board is completely solved.
 bool Board::IsSolved() {
     int i, j;
-    //If any of the conflicts has a false, return false
+    // If any of the conflicts has a false, return false
     for (i = 1; i <= boardSize; i++) {
         for (j = 1; j <= boardSize; j++) {
             if (!rowConflicts[i][j] || !colConflicts[i][j] ||
@@ -149,11 +145,10 @@ bool Board::IsSolved() {
 }
 
 
-//Prints all the conflicts
+// PrintConflicts function -  Outputs the current conflict states for rows, columns, and squares.
 void Board::PrintConflicts() {
     int i;
-
-    //Print the row conflicts
+    // Print the row conflicts
     cout << "Rows: ";
     for (int r = 1; r <= boardSize; r++) {
         cout << endl << "Row " << r << ": ";
@@ -162,7 +157,7 @@ void Board::PrintConflicts() {
         }
     }
 
-    //Print the columns conflicts
+    // Print the columns conflicts
     cout << endl << "Columns: ";
     for (int c= 1; c <= boardSize; c++) {
         cout << endl << "Column " << c << ": ";
@@ -171,7 +166,7 @@ void Board::PrintConflicts() {
         }
     }
 
-    //Print the square conflicts
+    // Print the square conflicts
     cout << endl << "Squares: ";
     for (int s = 1; s <= boardSize; s++) {
         cout << endl << "Square " << s << ": ";
@@ -180,50 +175,54 @@ void Board::PrintConflicts() {
         }
     }
     cout << endl;
-} //End PrintConflicts
+} // End PrintConflicts
 
 
-//Set cell i,j to val and update conflicts
+// SetCell & ClearCell functions - Modify cell values and update conflict status.
+
+// Sets cell i,j to val and update conflicts
 void  Board::SetCell(int i, int j, ValueType val) {
     //Throw error if out of board range
     if (i < 1 || i > boardSize || j < 1 || j > boardSize)
         throw rangeError("Bad value in SetCell");
-    //Set the value
+    // Sets the value
     value[i][j] = val;
-    //If val is not blank, add conflict
+    // If val is not blank, add conflict
     if (val != blank) {
-        AddConflict(i, j, val);
+        AddConflict(i, j, val);        // Manage conflict tracking for each cell.
     }
 }
 
-//Clears cell i, j and update conflicts
-//Assumes there is no other cell causing conflict in it's row, col, or square
+// Clears cell i, j and update conflicts
+// Assumes there is no other cell causing conflict in it's row, col, or square
 void Board::ClearCell(int i, int j) {
-    //Throw error if out of board range
+    // Throw error if out of board range
     if (i < 1 || i > boardSize || j < 1 || j > boardSize)
         throw rangeError("Bad value in ClearCell");
 
     int oldValue = value[i][j]; //Save old value
-    //If the old value is not blank change value to blank and remove conflict
+    // If the old value is not blank change value to blank and remove conflict
     if (oldValue != blank && oldValue != 0) {
         value[i][j] = blank;
-        RemoveConflict(i, j, oldValue);
+        RemoveConflict(i, j, oldValue);        // Manage conflict tracking for each cell.
     }
 }
 
-//Returns if adding value to cell[i][j] would cause a conflict
+
+// CausesConflict function - Determines if placing a value in a cell causes any conflicts.
+// Returns if adding value to cell[i][j] would cause a conflict
 bool Board::CausesConflict(int i, int j, ValueType val) {
-    //Throw error if out of board range
+    // Throw error if out of board range
     if (i < 1 || i > boardSize || j < 1 || j > boardSize ||
         val < minValue || val > maxValue)
         throw rangeError("Bad value in CausesConflict");
 
     int s = SquareNumber(i, j); //Get the square number
-    //Return true if there is a conflict in one of the matrices
+    // Return true if there is a conflict in one of the matrices
     return rowConflicts[i][val] && colConflicts[j][val] && sqConflicts[s][val];
 }
 
-//Add a conflict for cell[i][j]
+// Adds a conflict for cell[i][j]
 void Board::AddConflict(int i, int j, ValueType val) {
     //Throw error if out of board range
     if (i < 1 || i > boardSize || j < 1 || j > boardSize ||
@@ -237,7 +236,7 @@ void Board::AddConflict(int i, int j, ValueType val) {
     sqConflicts[s][val] = true;
 }
 
-//Remove conflicts for cell[i][j]
+// Removes conflicts for cell[i][j]
 void Board::RemoveConflict(int i, int j, ValueType val) {
     //Throw error if out of board range
     if (i < 1 || i > boardSize || j < 1 || j > boardSize ||
@@ -251,9 +250,9 @@ void Board::RemoveConflict(int i, int j, ValueType val) {
     sqConflicts[s][val] = false;
 }
 
-
+// isLegal function - Checks if a value can be legally placed in a cell.
+// Checks if a given digit (v) can be placed in a given cell (i, j)
 bool Board::IsLegal(int i, int j, int v)
-// Function to check if a given digit (v) can be placed in a given cell (i, j)
 {
    int sqr = (j+2)/3 + ((i-1)/3)*3;
    
@@ -264,9 +263,8 @@ bool Board::IsLegal(int i, int j, int v)
       return false;     
 }
 
-
+// nextCell function - Finds the next empty cell to fill.
 bool Board::NextCell(int &i, int &j)
-// Find next cell
 {
    // check each cell (i, j) for number of conflicts
    for (i = 1; i <= boardSize; i++)
@@ -281,8 +279,8 @@ bool Board::NextCell(int &i, int &j)
 } // End nextCell
 
 
+// solve function - Main recursive function for solving the Sudoku puzzle. It employs a backtracking algorithm.
 bool Board::Solve(int &count)
-// Function that ties together all functions to solve sudoku board
 {
    count++;
    int row = 0;
@@ -320,8 +318,8 @@ bool Board::Solve(int &count)
    return false;
 } // End of solve
 
+// getRecursions function - Returns the number of recursive calls made during the solving process.
 int Board::GetRecursions()
-// Function to return number of recursive calls it took to solve each board
 {
    return recursions;
 }
